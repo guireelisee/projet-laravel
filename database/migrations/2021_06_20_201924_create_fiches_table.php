@@ -15,14 +15,14 @@ class CreateFichesTable extends Migration
     {
         Schema::create('fiches', function (Blueprint $table) {
             $table->id();
-            $table->integer('numero_enreg')->unique();
+            // $table->integer('numero_enreg')->unique();
             $table->timestamp('date_arrivee');
             $table->string('nom_exp');
             $table->string('prenom_exp');
             $table->string('sp_instructions')->nullable();
             $table->string('dir_instructions')->nullable();
             $table->string('autres_instructions')->nullable();
-            $table->boolean('decision');
+            $table->boolean('decision')->nullable();
             $table->string('proposition')->nullable();
             $table->timestamps();
         });

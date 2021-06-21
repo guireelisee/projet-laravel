@@ -16,7 +16,7 @@ class FicheSeeder extends Seeder
     {
         $fiches = [
             [
-                'numero_enreg'=>'400',
+                // 'numero_enreg'=>'400',
                 'date_arrivee'=>'2000-06-14',
                 'nom_exp'=>'GUIRE',
                 'prenom_exp'=>'Elisée',
@@ -27,7 +27,7 @@ class FicheSeeder extends Seeder
                 'proposition'=>'',
             ],
             [
-                'numero_enreg'=>'100',
+                // 'numero_enreg'=>'100',
                 'date_arrivee'=>'2020-05-19',
                 'nom_exp'=>'KUELA',
                 'prenom_exp'=>'Elisée',

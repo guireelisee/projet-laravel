@@ -14,7 +14,8 @@ class FicheController extends Controller
      */
     public function index()
     {
-        //
+        $fiches = Fiche::all();
+        return view('index', compact('fiches'));
     }
 
     /**
@@ -24,7 +25,7 @@ class FicheController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -35,7 +36,12 @@ class FicheController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom_exp' => 'required',
+            'prenom_exp' => 'required',
+        ]);
+        Fiche::create($request->all());
+        return redirect()->route('fiche.index')->with('success','Demande enregistrée avec succès.');
     }
 
     /**
@@ -57,7 +63,7 @@ class FicheController extends Controller
      */
     public function edit(Fiche $fiche)
     {
-        //
+        return view('edit',compact('fiche'));
     }
 
     /**
@@ -69,7 +75,25 @@ class FicheController extends Controller
      */
     public function update(Request $request, Fiche $fiche)
     {
-        //
+        // dd($request);
+
+        if (!empty($request->sp_instructions)) {
+            $fiche->update(['sp_instructions' => $request->sp_instructions]);
+        }
+        if(!empty($request->sp_instructions) && !empty($request->dir_instructions)) {
+            $fiche->update([
+                'sp_instructions' => $request->sp_instructions,
+                'dir_instructions' => $request->dir_instructions
+            ]);
+        }
+        if(!empty($request->sp_instructions) && !empty($request->dir_instructions) && !empty($request->proposition)) {
+            $fiche->update([
+                'sp_instructions' => $request->sp_instructions,
+                'dir_instructions' => $request->dir_instructions,
+                'proposition' => $request->proposition
+            ]);
+        }
+        return redirect()->route('fiche.index')->with('success','Validation réussie.');
     }
 
     /**
