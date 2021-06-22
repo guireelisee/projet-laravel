@@ -21,8 +21,8 @@ class CreateFichesTable extends Migration
             $table->string('prenom_exp');
             $table->string('sp_instructions')->nullable();
             $table->string('dir_instructions')->nullable();
-            $table->string('autres_instructions')->nullable();
-            $table->boolean('decision')->nullable();
+            // $table->string('autres_instructions')->nullable();
+            // $table->boolean('decision')->nullable();
             $table->string('proposition')->nullable();
             $table->timestamps();
         });

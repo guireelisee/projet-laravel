@@ -1,26 +1,3 @@
-@php
-$validate = 0;
-$en_cours_sp = 0;
-$en_cours_dir = 0;
-$en_cours_scolarite = 0;
-
-foreach ($fiches as $fiche) {
-
-    if (empty($fiche->sp_instructions)) {
-        $en_cours_sp++;
-    }elseif (!empty($fiche->sp_instructions) && empty($fiche->dir_instructions)) {
-        $en_cours_dir++;
-    }elseif(!empty($fiche->sp_instructions) && !empty($fiche->dir_instructions) && empty($fiche->proposition)) {
-        $en_cours_scolarite++;
-    }elseif(!empty($fiche->sp_instructions) && !empty($fiche->dir_instructions) && !empty($fiche->proposition)) {
-        $validate++;
-    }
-
-
-
-}
-@endphp
-
 @extends('layouts.master')
 
 @section('main')
@@ -33,20 +10,21 @@ foreach ($fiches as $fiche) {
 
 <div class="row">
 
+    @php
+        $couleur = ($compteurs['en_cours_sp'] != 0) ? 'primary' : 'warning';
+    @endphp
     <div class="col-md-6 col-lg-3">
-        <div class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-warning border-warning card">
+        <div class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-{{$couleur}} border-{{$couleur}} card">
             <div class="widget-chat-wrapper-outer">
                 <div class="widget-chart-content">
                     <div class="widget-title opacity-5 text-uppercase">Sécrétaire Permanent</div>
                     <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
                         <div class="widget-chart-flex align-items-center">
                             <div>
-                                <span class="opacity-10 text-warning pr-2">
+                                <span class="opacity-10 text-{{$couleur}} pr-2">
                                     <i class="fa fa-angle-up"></i>
                                 </span>
-                                @php
-                                echo $en_cours_sp;
-                                @endphp
+                                {{$compteurs['en_cours_sp']}}
                             </div>
                         </div>
                     </div>
@@ -55,20 +33,21 @@ foreach ($fiches as $fiche) {
         </div>
     </div>
 
+    @php
+        $couleur = ($compteurs['en_cours_dir'] != 0) ? 'primary' : 'warning';
+    @endphp
     <div class="col-md-6 col-lg-3">
-        <div class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-warning border-warning card">
+        <div class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-{{$couleur}} border-{{$couleur}} card">
             <div class="widget-chat-wrapper-outer">
                 <div class="widget-chart-content">
                     <div class="widget-title opacity-5 text-uppercase">Directeur</div>
                     <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
                         <div class="widget-chart-flex align-items-center">
                             <div>
-                                <span class="opacity-10 text-warning pr-2">
+                                <span class="opacity-10 text-{{$couleur}} pr-2">
                                     <i class="fa fa-angle-up"></i>
                                 </span>
-                                @php
-                                echo $en_cours_dir;
-                                @endphp
+                               {{$compteurs['en_cours_dir']}}
                             </div>
                         </div>
                     </div>
@@ -77,20 +56,21 @@ foreach ($fiches as $fiche) {
         </div>
     </div>
 
+    @php
+        $couleur = ($compteurs['en_cours_scolarite'] != 0) ? 'primary' : 'warning';
+    @endphp
     <div class="col-md-6 col-lg-3">
-        <div class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-warning border-warning card">
+        <div class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-{{$couleur}} border-{{$couleur}} card">
             <div class="widget-chat-wrapper-outer">
                 <div class="widget-chart-content">
                     <div class="widget-title opacity-5 text-uppercase">Scolarité</div>
                     <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
                         <div class="widget-chart-flex align-items-center">
                             <div>
-                                <span class="opacity-10 text-warning pr-2">
+                                <span class="opacity-10 text-{{$couleur}} pr-2">
                                     <i class="fa fa-angle-up"></i>
                                 </span>
-                                @php
-                                echo $en_cours_scolarite;
-                                @endphp
+                                {{$compteurs['en_cours_scolarite']}}
                             </div>
                         </div>
                     </div>
@@ -99,20 +79,21 @@ foreach ($fiches as $fiche) {
         </div>
     </div>
 
+    @php
+        $couleur = ($compteurs['validate'] != 0) ? 'success' : 'warning';
+    @endphp
     <div class="col-md-6 col-lg-3">
-        <div class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-success border-success card">
+        <div class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-{{$couleur}} border-{{$couleur}} card">
             <div class="widget-chat-wrapper-outer">
                 <div class="widget-chart-content">
                     <div class="widget-title opacity-5 text-uppercase">Validé</div>
                     <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
                         <div class="widget-chart-flex align-items-center">
                             <div>
-                                <span class="opacity-10 text-success pr-2">
+                                <span class="opacity-10 text-{{$couleur}} pr-2">
                                     <i class="fa fa-angle-up"></i>
                                 </span>
-                                @php
-                                echo $validate;
-                                @endphp
+                                {{$compteurs['validate']}}
                             </div>
                         </div>
                     </div>

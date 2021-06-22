@@ -8,32 +8,33 @@ use Illuminate\Http\Request;
 class FicheController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function index()
     {
         $fiches = Fiche::all();
-        return view('index', compact('fiches'));
+        $compteurs = FicheController::compteur();
+        return view('index', compact('fiches','compteurs'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Show the form for creating a new resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function create()
     {
         return view('fiches.create');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
     public function store(Request $request)
     {
         $request->validate([
@@ -45,34 +46,34 @@ class FicheController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Fiche  $fiche
-     * @return \Illuminate\Http\Response
-     */
+    * Display the specified resource.
+    *
+    * @param  \App\Models\Fiche  $fiche
+    * @return \Illuminate\Http\Response
+    */
     public function show(Fiche $fiche)
     {
         //
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Fiche  $fiche
-     * @return \Illuminate\Http\Response
-     */
+    * Show the form for editing the specified resource.
+    *
+    * @param  \App\Models\Fiche  $fiche
+    * @return \Illuminate\Http\Response
+    */
     public function edit(Fiche $fiche)
     {
         return view('fiches.edit',compact('fiche'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Fiche  $fiche
-     * @return \Illuminate\Http\Response
-     */
+    * Update the specified resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\Fiche  $fiche
+    * @return \Illuminate\Http\Response
+    */
     public function update(Request $request, Fiche $fiche)
     {
 
@@ -95,19 +96,40 @@ class FicheController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Fiche  $fiche
-     * @return \Illuminate\Http\Response
-     */
+    * Remove the specified resource from storage.
+    *
+    * @param  \App\Models\Fiche  $fiche
+    * @return \Illuminate\Http\Response
+    */
     public function destroy(Fiche $fiche)
     {
         //
     }
 
-    // public function compteur()
-    // {
-    //     $fiche = Fiche::where('sp_instructions','')->get()->count();
-    //     dd($fiche);
-    // }
+    public function compteur()
+    {
+        $fiches = Fiche::all();
+        $validate = 0;
+        $en_cours_sp = 0;
+        $en_cours_dir = 0;
+        $en_cours_scolarite = 0;
+
+        foreach ($fiches as $fiche) {
+            if (empty($fiche->sp_instructions)) {
+                $en_cours_sp++;
+            }elseif (!empty($fiche->sp_instructions) && empty($fiche->dir_instructions)) {
+                $en_cours_dir++;
+            }elseif(!empty($fiche->sp_instructions) && !empty($fiche->dir_instructions) && empty($fiche->proposition)) {
+                $en_cours_scolarite++;
+            }elseif(!empty($fiche->sp_instructions) && !empty($fiche->dir_instructions) && !empty($fiche->proposition)) {
+                $validate++;
+            }
+        }
+        return $data = [
+            'en_cours_sp' => $en_cours_sp,
+            'en_cours_dir' => $en_cours_dir,
+            "en_cours_scolarite" => $en_cours_scolarite,
+            "validate"=>$validate
+        ];
+    }
 }
