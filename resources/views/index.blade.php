@@ -8,21 +8,15 @@ foreach ($fiches as $fiche) {
 
     if (empty($fiche->sp_instructions)) {
         $en_cours_sp++;
-        $en_cours_dir = 0;
-        $en_cours_scolarite = 0;
-    } elseif (empty($fiche->dir_instructions)) {
+    }elseif (!empty($fiche->sp_instructions) && empty($fiche->dir_instructions)) {
         $en_cours_dir++;
-        $en_cours_scolarite = 0;
-    } elseif (empty($fiche->proposition)) {
+    }elseif(!empty($fiche->sp_instructions) && !empty($fiche->dir_instructions) && empty($fiche->proposition)) {
         $en_cours_scolarite++;
-    }
-    if (!empty($fiche->dir_instructions)) {
+    }elseif(!empty($fiche->sp_instructions) && !empty($fiche->dir_instructions) && !empty($fiche->proposition)) {
         $validate++;
     }
 
-    if (!empty($fiche->sp_instructions)) {
-        $en_cours_dir;
-    }
+
 
 }
 @endphp
@@ -146,7 +140,7 @@ foreach ($fiches as $fiche) {
                 @foreach ($fiches as $fiche)
                 <tr>
                     <td>{{$fiche->id}}</td>
-                    <td>{{$fiche->date_arrivee}}</td>
+                    <td>{{date('d-m-Y', strtotime($fiche->date_arrivee))}}</td>
                     <td>{{$fiche->nom_exp . " ". $fiche->prenom_exp}}</td>
 
                     @if ($fiche->sp_instructions == "")
@@ -154,31 +148,28 @@ foreach ($fiches as $fiche) {
                         <td><a name="" id="" class="btn btn-warning text-white" href="#" role="button">NULL</a></td>
                         <td><a name="" id="" class="btn btn-warning text-white" href="#" role="button">NULL</a></td>
                         <td><a name="" id="" class="btn btn-warning text-white" href="#" role="button">En cours</a></td>
+                    @endif
 
-                    @else
-                    @if ($fiche->dir_instructions == "")
+                    @if ($fiche->sp_instructions != "" && $fiche->dir_instructions == "")
                         <td><a name="" id="" class="btn btn-success text-white" href="#" role="button">{{$fiche->sp_instructions}}</a></td>
                         <td><a name="" id="" class="btn btn-primary text-white" href="{{ route('fiche.edit', $fiche->id) }}" role="button">En cours</a></td>
                         <td><a name="" id="" class="btn btn-warning text-white" href="#" role="button">NULL</a></td>
                         <td><a name="" id="" class="btn btn-warning text-white" href="#" role="button">En cours</a></td>
+                    @endif
 
-                    @else
+                    @if ($fiche->sp_instructions != "" && $fiche->dir_instructions != "" && $fiche->proposition == "")
                         <td><a name="" id="" class="btn btn-success text-white" href="#" role="button">{{$fiche->sp_instructions}}</a></td>
                         <td><a name="" id="" class="btn btn-success text-white" href="#" role="button">{{$fiche->dir_instructions}}</a></td>
-                    @if ($fiche->autres_instructions == "")
-                    @else
-                        <td>{{$fiche->autres_instructions}}</td>
-                    @endif
-                        @if ($fiche->proposition == "")
                         <td><a name="" id="" class="btn btn-primary text-white" href="{{ route('fiche.edit', $fiche->id) }}" role="button">En cours</a></td>
-                        @else
-                            <td><a name="" id="" class="btn btn-success text-white" href="{{ route('fiche.edit', $fiche->id) }}" role="button">{{$fiche->proposition}}</a></td>
-                        @endif
+                        <td><a name="" id="" class="btn btn-warning text-white" href="#" role="button">En cours</a></td>
+                    @endif
+
+                    @if ($fiche->sp_instructions != "" && $fiche->dir_instructions != "" && $fiche->proposition != "")
+                        <td><a name="" id="" class="btn btn-success text-white" href="#" role="button">{{$fiche->sp_instructions}}</a></td>
+                        <td><a name="" id="" class="btn btn-success text-white" href="#" role="button">{{$fiche->dir_instructions}}</a></td>
+                        <td><a name="" id="" class="btn btn-success text-white" href="#" role="button">{{$fiche->proposition}}</a></td>
                         <td><a name="" id="" class="btn btn-success text-white" href="#" role="button">Terminé</a></td>
                     @endif
-
-                    @endif
-
 
                 </tr>
                 @endforeach
@@ -186,6 +177,5 @@ foreach ($fiches as $fiche) {
         </table>
     </div>
 </div>
-
 
 @endsection

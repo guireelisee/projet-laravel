@@ -25,7 +25,7 @@ class FicheController extends Controller
      */
     public function create()
     {
-        return view('create');
+        return view('fiches.create');
     }
 
     /**
@@ -63,7 +63,7 @@ class FicheController extends Controller
      */
     public function edit(Fiche $fiche)
     {
-        return view('edit',compact('fiche'));
+        return view('fiches.edit',compact('fiche'));
     }
 
     /**
@@ -75,24 +75,22 @@ class FicheController extends Controller
      */
     public function update(Request $request, Fiche $fiche)
     {
-        // dd($request);
 
-        if (!empty($request->sp_instructions)) {
+        // Mise à jour de l'instruction du SP
+        if (!empty($request->sp_instructions) && !isset($request->dir_instructions)) {
             $fiche->update(['sp_instructions' => $request->sp_instructions]);
         }
+
+        // Mise à jour de l'instruction du Directeur
         if(!empty($request->sp_instructions) && !empty($request->dir_instructions)) {
-            $fiche->update([
-                'sp_instructions' => $request->sp_instructions,
-                'dir_instructions' => $request->dir_instructions
-            ]);
+            $fiche->update(['dir_instructions' => $request->dir_instructions]);
         }
+
+        // Mise à jour de l'instruction de la scolarité
         if(!empty($request->sp_instructions) && !empty($request->dir_instructions) && !empty($request->proposition)) {
-            $fiche->update([
-                'sp_instructions' => $request->sp_instructions,
-                'dir_instructions' => $request->dir_instructions,
-                'proposition' => $request->proposition
-            ]);
+            $fiche->update(['proposition' => $request->proposition]);
         }
+
         return redirect()->route('fiche.index')->with('success','Validation réussie.');
     }
 
@@ -106,4 +104,10 @@ class FicheController extends Controller
     {
         //
     }
+
+    // public function compteur()
+    // {
+    //     $fiche = Fiche::where('sp_instructions','')->get()->count();
+    //     dd($fiche);
+    // }
 }

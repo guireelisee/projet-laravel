@@ -15,4 +15,10 @@ use App\Http\Controllers\FicheController;
 */
 
 Route::resource('fiche', FicheController::class);
+Route::get('/', [FicheController::class, 'index']);
+// Route::get('test', [FicheController::class, 'compteur']);
+
+// Route::get('test', function(){
+//     return view('test');
+// });
 
